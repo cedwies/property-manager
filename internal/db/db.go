@@ -70,6 +70,23 @@ func initSchema(db *sql.DB) error {
 	);`
 
 	_, err := db.Exec(housesSchema)
+	if err != nil {
+		return err
+	}
+
+	// Create apartments table
+	apartmentsSchema := `
+	CREATE TABLE IF NOT EXISTS apartments (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		name TEXT NOT NULL,
+		house_id INTEGER NOT NULL,
+		size REAL NOT NULL,
+		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (house_id) REFERENCES houses(id)
+	);`
+
+	_, err = db.Exec(apartmentsSchema)
 	return err
 }
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './styles/App.css';
 import Houses from './pages/Houses';
+import Apartments from './pages/Apartments';
 import { GetAppInfo } from '../wailsjs/go/main/App';
 
 function App() {
@@ -25,6 +26,8 @@ function App() {
     switch (activePage) {
       case 'houses':
         return <Houses />;
+      case 'apartments':
+        return <Apartments />;
       case 'welcome':
       default:
         return (
@@ -63,6 +66,12 @@ function App() {
                 onClick={() => setActivePage('houses')}
               >
                 Houses
+              </li>
+              <li 
+                className={`nav-item ${activePage === 'apartments' ? 'active' : ''}`}
+                onClick={() => setActivePage('apartments')}
+              >
+                Apartments
               </li>
             </ul>
           </nav>
