@@ -18,6 +18,7 @@ type App struct {
 	db                  *sql.DB
 	houseRepository     *repository.HouseRepository
 	apartmentRepository *repository.ApartmentRepository
+	tenantRepository    *repository.TenantRepository
 }
 
 // NewApp creates a new App application struct
@@ -32,6 +33,7 @@ func (a *App) startup(ctx context.Context) {
 	a.db = db.GetDB()
 	a.houseRepository = repository.NewHouseRepository(a.db)
 	a.apartmentRepository = repository.NewApartmentRepository(a.db)
+	a.tenantRepository = repository.NewTenantRepository(a.db)
 }
 
 // shutdown is called when the app is closing
@@ -43,8 +45,8 @@ func (a *App) shutdown(ctx context.Context) {
 func (a *App) GetAppInfo() map[string]string {
 	return map[string]string{
 		"name":    "Property Management System",
-		"version": "0.2.0",
-		"status":  "Houses and Apartments Management Implemented",
+		"version": "0.3.0",
+		"status":  "Houses, Apartments, and Tenants Management Implemented",
 	}
 }
 
@@ -159,4 +161,119 @@ func (a *App) UpdateApartment(id int64, name string, houseID int64, size string)
 // DeleteApartment removes an apartment from the database
 func (a *App) DeleteApartment(id int64) error {
 	return a.apartmentRepository.Delete(id)
+}
+
+// CreateTenant adds a new tenant to the database
+func (a *App) CreateTenant(firstName, lastName, moveInDate, moveOutDate, deposit,
+	email, numberOfPersons, targetColdRent, targetAncillaryPayment,
+	targetElectricityPayment, greeting string, houseID, apartmentID int64) (*models.Tenant, error) {
+
+	tenant, err := models.NewTenant(
+		firstName,
+		lastName,
+		moveInDate,
+		moveOutDate,
+		deposit,
+		email,
+		numberOfPersons,
+		targetColdRent,
+		targetAncillaryPayment,
+		targetElectricityPayment,
+		greeting,
+		houseID,
+		apartmentID,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	err = a.tenantRepository.Create(tenant)
+	if err != nil {
+		return nil, err
+	}
+
+	// Fetch the complete tenant with house and apartment information
+	return a.tenantRepository.GetByID(tenant.ID)
+}
+
+// GetAllTenants returns all tenants from the database
+func (a *App) GetAllTenants() ([]models.Tenant, error) {
+	return a.tenantRepository.GetAll()
+}
+
+// GetTenantsByHouseID returns all tenants for a specific house
+func (a *App) GetTenantsByHouseID(houseID int64) ([]models.Tenant, error) {
+	return a.tenantRepository.GetByHouseID(houseID)
+}
+
+// GetTenantsByApartmentID returns all tenants for a specific apartment
+func (a *App) GetTenantsByApartmentID(apartmentID int64) ([]models.Tenant, error) {
+	return a.tenantRepository.GetByApartmentID(apartmentID)
+}
+
+// GetTenantByID returns a tenant with the specified ID
+func (a *App) GetTenantByID(id int64) (*models.Tenant, error) {
+	return a.tenantRepository.GetByID(id)
+}
+
+// UpdateTenant modifies an existing tenant in the database
+func (a *App) UpdateTenant(
+	id int64,
+	firstName,
+	lastName,
+	moveInDate,
+	moveOutDate,
+	deposit,
+	email,
+	numberOfPersons,
+	targetColdRent,
+	targetAncillaryPayment,
+	targetElectricityPayment,
+	greeting string,
+	houseID,
+	apartmentID int64) (*models.Tenant, error) {
+
+	// First fetch the existing tenant to preserve any fields we don't want to modify
+	existingTenant, err := a.tenantRepository.GetByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	// Create a new tenant object with the updated information
+	updatedTenant, err := models.NewTenant(
+		firstName,
+		lastName,
+		moveInDate,
+		moveOutDate,
+		deposit,
+		email,
+		numberOfPersons,
+		targetColdRent,
+		targetAncillaryPayment,
+		targetElectricityPayment,
+		greeting,
+		houseID,
+		apartmentID,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	// Set the ID and timestamps
+	updatedTenant.ID = id
+	updatedTenant.CreatedAt = existingTenant.CreatedAt
+
+	// Update the tenant in the database
+	err = a.tenantRepository.Update(updatedTenant)
+	if err != nil {
+		return nil, err
+	}
+
+	// Fetch the complete updated tenant with house and apartment information
+	return a.tenantRepository.GetByID(id)
+}
+
+// DeleteTenant removes a tenant from the database
+func (a *App) DeleteTenant(id int64) error {
+	return a.tenantRepository.Delete(id)
 }

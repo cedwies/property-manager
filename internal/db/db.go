@@ -87,6 +87,34 @@ func initSchema(db *sql.DB) error {
 	);`
 
 	_, err = db.Exec(apartmentsSchema)
+	if err != nil {
+		return err
+	}
+
+	// Create tenants table
+	tenantsSchema := `
+	CREATE TABLE IF NOT EXISTS tenants (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		first_name TEXT NOT NULL,
+		last_name TEXT NOT NULL,
+		move_in_date TEXT NOT NULL,
+		move_out_date TEXT,
+		deposit REAL NOT NULL,
+		email TEXT,
+		number_of_persons INTEGER NOT NULL,
+		target_cold_rent REAL NOT NULL,
+		target_ancillary_payment REAL NOT NULL,
+		target_electricity_payment REAL NOT NULL,
+		greeting TEXT NOT NULL,
+		house_id INTEGER NOT NULL,
+		apartment_id INTEGER NOT NULL,
+		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (house_id) REFERENCES houses(id),
+		FOREIGN KEY (apartment_id) REFERENCES apartments(id)
+	);`
+
+	_, err = db.Exec(tenantsSchema)
 	return err
 }
 

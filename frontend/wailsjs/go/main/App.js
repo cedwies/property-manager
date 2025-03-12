@@ -10,6 +10,10 @@ export function CreateHouse(arg1, arg2, arg3, arg4, arg5, arg6) {
   return window['go']['main']['App']['CreateHouse'](arg1, arg2, arg3, arg4, arg5, arg6);
 }
 
+export function CreateTenant(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13) {
+  return window['go']['main']['App']['CreateTenant'](arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
+}
+
 export function DeleteApartment(arg1) {
   return window['go']['main']['App']['DeleteApartment'](arg1);
 }
@@ -18,12 +22,20 @@ export function DeleteHouse(arg1) {
   return window['go']['main']['App']['DeleteHouse'](arg1);
 }
 
+export function DeleteTenant(arg1) {
+  return window['go']['main']['App']['DeleteTenant'](arg1);
+}
+
 export function GetAllApartments() {
   return window['go']['main']['App']['GetAllApartments']();
 }
 
 export function GetAllHouses() {
   return window['go']['main']['App']['GetAllHouses']();
+}
+
+export function GetAllTenants() {
+  return window['go']['main']['App']['GetAllTenants']();
 }
 
 export function GetApartmentByID(arg1) {
@@ -42,10 +54,26 @@ export function GetHouseByID(arg1) {
   return window['go']['main']['App']['GetHouseByID'](arg1);
 }
 
+export function GetTenantByID(arg1) {
+  return window['go']['main']['App']['GetTenantByID'](arg1);
+}
+
+export function GetTenantsByApartmentID(arg1) {
+  return window['go']['main']['App']['GetTenantsByApartmentID'](arg1);
+}
+
+export function GetTenantsByHouseID(arg1) {
+  return window['go']['main']['App']['GetTenantsByHouseID'](arg1);
+}
+
 export function UpdateApartment(arg1, arg2, arg3, arg4) {
   return window['go']['main']['App']['UpdateApartment'](arg1, arg2, arg3, arg4);
 }
 
 export function UpdateHouse(arg1, arg2, arg3, arg4, arg5, arg6, arg7) {
   return window['go']['main']['App']['UpdateHouse'](arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+}
+
+export function UpdateTenant(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14) {
+  return window['go']['main']['App']['UpdateTenant'](arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
 }

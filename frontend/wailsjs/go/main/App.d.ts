@@ -6,13 +6,19 @@ export function CreateApartment(arg1:string,arg2:number,arg3:string):Promise<mod
 
 export function CreateHouse(arg1:string,arg2:string,arg3:string,arg4:string,arg5:string,arg6:string):Promise<models.House>;
 
+export function CreateTenant(arg1:string,arg2:string,arg3:string,arg4:string,arg5:string,arg6:string,arg7:string,arg8:string,arg9:string,arg10:string,arg11:string,arg12:number,arg13:number):Promise<models.Tenant>;
+
 export function DeleteApartment(arg1:number):Promise<void>;
 
 export function DeleteHouse(arg1:number):Promise<void>;
 
+export function DeleteTenant(arg1:number):Promise<void>;
+
 export function GetAllApartments():Promise<Array<models.Apartment>>;
 
 export function GetAllHouses():Promise<Array<models.House>>;
+
+export function GetAllTenants():Promise<Array<models.Tenant>>;
 
 export function GetApartmentByID(arg1:number):Promise<models.Apartment>;
 
@@ -22,6 +28,14 @@ export function GetAppInfo():Promise<Record<string, string>>;
 
 export function GetHouseByID(arg1:number):Promise<models.House>;
 
+export function GetTenantByID(arg1:number):Promise<models.Tenant>;
+
+export function GetTenantsByApartmentID(arg1:number):Promise<Array<models.Tenant>>;
+
+export function GetTenantsByHouseID(arg1:number):Promise<Array<models.Tenant>>;
+
 export function UpdateApartment(arg1:number,arg2:string,arg3:number,arg4:string):Promise<models.Apartment>;
 
 export function UpdateHouse(arg1:number,arg2:string,arg3:string,arg4:string,arg5:string,arg6:string,arg7:string):Promise<models.House>;
+
+export function UpdateTenant(arg1:number,arg2:string,arg3:string,arg4:string,arg5:string,arg6:string,arg7:string,arg8:string,arg9:string,arg10:string,arg11:string,arg12:string,arg13:number,arg14:number):Promise<models.Tenant>;
