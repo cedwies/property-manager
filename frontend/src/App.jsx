@@ -1,7 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles/App.css';
+import Houses from './pages/Houses';
+import { GetAppInfo } from '../wailsjs/go/main/App';
 
 function App() {
+  const [activePage, setActivePage] = useState('welcome');
+  const [appInfo, setAppInfo] = useState({});
+
+  useEffect(() => {
+    // Fetch application info from the backend
+    const fetchAppInfo = async () => {
+      try {
+        const info = await GetAppInfo();
+        setAppInfo(info);
+      } catch (error) {
+        console.error('Error fetching app info:', error);
+      }
+    };
+
+    fetchAppInfo();
+  }, []);
+
+  const renderContent = () => {
+    switch (activePage) {
+      case 'houses':
+        return <Houses />;
+      case 'welcome':
+      default:
+        return (
+          <div className="welcome-screen">
+            <h2>Welcome to Your Property Management Dashboard</h2>
+            <p>Use the sidebar to navigate between features.</p>
+            <div className="app-info">
+              <p><strong>App Name:</strong> {appInfo.name}</p>
+              <p><strong>Version:</strong> {appInfo.version}</p>
+              <p><strong>Status:</strong> {appInfo.status}</p>
+            </div>
+          </div>
+        );
+    }
+  };
+
   return (
     <div className="container">
       <header className="app-header">
@@ -13,16 +52,24 @@ function App() {
         <div className="sidebar">
           <nav>
             <ul>
-              <li className="nav-item">Houses</li>
+              <li 
+                className={`nav-item ${activePage === 'welcome' ? 'active' : ''}`}
+                onClick={() => setActivePage('welcome')}
+              >
+                Dashboard
+              </li>
+              <li 
+                className={`nav-item ${activePage === 'houses' ? 'active' : ''}`}
+                onClick={() => setActivePage('houses')}
+              >
+                Houses
+              </li>
             </ul>
           </nav>
         </div>
         
         <div className="content">
-          <div className="welcome-screen">
-            <h2>Welcome to Your Property Management Dashboard</h2>
-            <p>This is the initial setup. Features will be implemented step by step.</p>
-          </div>
+          {renderContent()}
         </div>
       </main>
       
