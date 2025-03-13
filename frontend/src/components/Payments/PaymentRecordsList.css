@@ -1,0 +1,33 @@
+.payment-records-list {
+    width: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .payment-records-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 0.7fr 0.5fr 0.5fr;
+    background-color: #34495e;
+    padding: 0.8rem 1rem;
+    font-weight: 600;
+    color: white;
+  }
+  
+  .payment-records-body {
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: white;
+  }
+  
+  .header-cell {
+    font-size: 0.9rem;
+  }
+  
+  .month-cell {
+    font-weight: 600;
+  }
+  
+  .action-cell {
+    text-align: center;
+  }

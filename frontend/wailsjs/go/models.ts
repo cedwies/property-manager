@@ -161,6 +161,64 @@ export namespace models {
 		    return a;
 		}
 	}
+	export class PaymentRecord {
+	    id: number;
+	    tenantId: number;
+	    tenant?: Tenant;
+	    month: string;
+	    targetColdRent: number;
+	    paidColdRent: number;
+	    paidAncillary: number;
+	    paidElectricity: number;
+	    extraPayments: number;
+	    persons: number;
+	    note: string;
+	    isLocked: boolean;
+	    // Go type: time
+	    createdAt: any;
+	    // Go type: time
+	    updatedAt: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new PaymentRecord(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.tenantId = source["tenantId"];
+	        this.tenant = this.convertValues(source["tenant"], Tenant);
+	        this.month = source["month"];
+	        this.targetColdRent = source["targetColdRent"];
+	        this.paidColdRent = source["paidColdRent"];
+	        this.paidAncillary = source["paidAncillary"];
+	        this.paidElectricity = source["paidElectricity"];
+	        this.extraPayments = source["extraPayments"];
+	        this.persons = source["persons"];
+	        this.note = source["note"];
+	        this.isLocked = source["isLocked"];
+	        this.createdAt = this.convertValues(source["createdAt"], null);
+	        this.updatedAt = this.convertValues(source["updatedAt"], null);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 
 }
 

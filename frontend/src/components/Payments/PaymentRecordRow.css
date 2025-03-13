@@ -1,0 +1,96 @@
+.payment-record-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 0.7fr 0.5fr 0.5fr;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid #ecf0f1;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+  }
+  
+  .payment-record-row:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .payment-record-row.current-month {
+    background-color: #edf7fd;
+  }
+  
+  .payment-record-row.current-month:hover {
+    background-color: #d6ebf7;
+  }
+  
+  .payment-record-row.locked {
+    background-color: #f8f9fa;
+    color: #7f8c8d;
+  }
+  
+  .row-cell {
+    display: flex;
+    align-items: center;
+  }
+  
+  .month-cell {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  .amount-input,
+  .persons-input {
+    width: 100%;
+    padding: 0.4rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+    font-family: monospace;
+  }
+  
+  .amount-input:focus,
+  .persons-input:focus {
+    outline: none;
+    border-color: #3498db;
+  }
+  
+  .amount-input.disabled,
+  .persons-input.disabled {
+    background-color: #f8f9fa;
+    border-color: #ecf0f1;
+    cursor: not-allowed;
+    color: #7f8c8d;
+  }
+  
+  .action-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .note-button,
+  .lock-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.3rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+  
+  .note-button:hover,
+  .lock-button:hover {
+    background-color: #ecf0f1;
+  }
+  
+  .note-button.has-note {
+    color: #27ae60;
+  }
+  
+  .lock-button.locked {
+    color: #e74c3c;
+  }
+  
+  .note-button.disabled,
+  .lock-button.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }

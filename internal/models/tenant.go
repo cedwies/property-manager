@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"property-management/internal/utils"
 )
 
 // Tenant represents a tenant living in an apartment
@@ -67,7 +69,7 @@ func NewTenant(
 	}
 
 	// Parse deposit
-	deposit, err := parseAmount(depositStr)
+	deposit, err := utils.ParseAmount(depositStr)
 	if err != nil {
 		return nil, errors.New("invalid deposit amount")
 	}
@@ -82,7 +84,7 @@ func NewTenant(
 	}
 
 	// Parse target cold rent
-	targetColdRent, err := parseAmount(targetColdRentStr)
+	targetColdRent, err := utils.ParseAmount(targetColdRentStr)
 	if err != nil {
 		return nil, errors.New("invalid target cold rent amount")
 	}
@@ -91,7 +93,7 @@ func NewTenant(
 	}
 
 	// Parse target ancillary payment
-	targetAncillaryPayment, err := parseAmount(targetAncillaryPaymentStr)
+	targetAncillaryPayment, err := utils.ParseAmount(targetAncillaryPaymentStr)
 	if err != nil {
 		return nil, errors.New("invalid target ancillary payment amount")
 	}
@@ -100,7 +102,7 @@ func NewTenant(
 	}
 
 	// Parse target electricity payment
-	targetElectricityPayment, err := parseAmount(targetElectricityPaymentStr)
+	targetElectricityPayment, err := utils.ParseAmount(targetElectricityPaymentStr)
 	if err != nil {
 		return nil, errors.New("invalid target electricity payment amount")
 	}
@@ -193,13 +195,4 @@ func (t *Tenant) Validate() error {
 // Helper functions
 func parseDate(dateStr string) (time.Time, error) {
 	return time.Parse("2006-01-02", strings.TrimSpace(dateStr))
-}
-
-func parseAmount(amountStr string) (float64, error) {
-	// Support both dot and comma as decimal separators
-	amountStr = strings.TrimSpace(amountStr)
-	// Replace comma with dot for parsing
-	amountStr = strings.Replace(amountStr, ",", ".", -1)
-
-	return strconv.ParseFloat(amountStr, 64)
 }

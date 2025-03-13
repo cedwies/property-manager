@@ -115,6 +115,31 @@ func initSchema(db *sql.DB) error {
 	);`
 
 	_, err = db.Exec(tenantsSchema)
+	if err != nil {
+		return err
+	}
+
+	// Create payment records table
+	paymentRecordsSchema := `
+	CREATE TABLE IF NOT EXISTS payment_records (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		tenant_id INTEGER NOT NULL,
+		month TEXT NOT NULL,
+		target_cold_rent REAL NOT NULL,
+		paid_cold_rent REAL,
+		paid_ancillary REAL,
+		paid_electricity REAL,
+		extra_payments REAL,
+		persons INTEGER, 
+		note TEXT,
+		is_locked BOOLEAN DEFAULT 0,
+		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (tenant_id) REFERENCES tenants(id),
+		UNIQUE(tenant_id, month)
+	);`
+
+	_, err = db.Exec(paymentRecordsSchema)
 	return err
 }
 

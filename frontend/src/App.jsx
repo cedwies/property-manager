@@ -3,6 +3,7 @@ import './styles/App.css';
 import Houses from './pages/Houses';
 import Apartments from './pages/Apartments';
 import Tenants from './pages/Tenants';
+import Payments from './pages/Payments';
 import { GetAppInfo } from '../wailsjs/go/main/App';
 
 function App() {
@@ -31,6 +32,8 @@ function App() {
         return <Apartments />;
       case 'tenants':
         return <Tenants />;
+      case 'payments':
+        return <Payments />;
       case 'welcome':
       default:
         return (
@@ -81,6 +84,12 @@ function App() {
                 onClick={() => setActivePage('tenants')}
               >
                 Tenants
+              </li>
+              <li 
+                className={`nav-item ${activePage === 'payments' ? 'active' : ''}`}
+                onClick={() => setActivePage('payments')}
+              >
+                Payments
               </li>
             </ul>
           </nav>
