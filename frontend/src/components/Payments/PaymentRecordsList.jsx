@@ -31,31 +31,34 @@ const PaymentRecordsList = ({
 
   // Create a row for each month, using existing record or creating empty one
   const renderRows = () => {
-    return filteredMonths.map(month => {
-      const record = recordsMap[month] || {
-        id: 0,
-        month: month,
-        tenantId: currentTenant ? currentTenant.id : 0,
-        targetColdRent: currentTenant ? currentTenant.targetColdRent : 0,
-        paidColdRent: 0,
-        paidAncillary: 0,
-        paidElectricity: 0,
-        extraPayments: 0,
-        persons: currentTenant ? currentTenant.numberOfPersons : 0,
-        note: '',
-        isLocked: false
-      };
-
-      return (
-        <PaymentRecordRow 
-          key={month}
-          record={record}
-          onChange={onRecordChange}
-          onOpenNote={onOpenNote}
-          onToggleLock={onToggleLock}
-        />
-      );
-    });
+    return filteredMonths
+      .slice() // FIX: reverse the order, most recent month at the top
+      .reverse() 
+      .map(month => {
+        const record = recordsMap[month] || {
+          id: 0,
+          month: month,
+          tenantId: currentTenant ? currentTenant.id : 0,
+          targetColdRent: currentTenant ? currentTenant.targetColdRent : 0,
+          paidColdRent: 0,
+          paidAncillary: 0,
+          paidElectricity: 0,
+          extraPayments: 0,
+          persons: currentTenant ? currentTenant.numberOfPersons : 0,
+          note: '',
+          isLocked: false
+        };
+  
+        return (
+          <PaymentRecordRow 
+            key={month}
+            record={record}
+            onChange={onRecordChange}
+            onOpenNote={onOpenNote}
+            onToggleLock={onToggleLock}
+          />
+        );
+      });
   };
 
   return (
