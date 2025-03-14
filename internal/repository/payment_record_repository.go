@@ -51,9 +51,19 @@ func (r *PaymentRecordRepository) Create(record *models.PaymentRecord) error {
 		return err
 	}
 
+	// Check if tenant exists
+	var tenantExists int
+	err := r.db.QueryRow("SELECT COUNT(*) FROM tenants WHERE id = ?", record.TenantID).Scan(&tenantExists)
+	if err != nil {
+		return err
+	}
+	if tenantExists == 0 {
+		return errors.New("tenant not found")
+	}
+
 	// Check if record for this tenant and month already exists
 	var count int
-	err := r.db.QueryRow("SELECT COUNT(*) FROM payment_records WHERE tenant_id = ? AND month = ?",
+	err = r.db.QueryRow("SELECT COUNT(*) FROM payment_records WHERE tenant_id = ? AND month = ?",
 		record.TenantID, record.Month).Scan(&count)
 	if err != nil {
 		return err
@@ -519,6 +529,18 @@ func (r *PaymentRecordRepository) BatchCreateOrUpdateRecords(records []models.Pa
 
 		if err != nil {
 			if err == sql.ErrNoRows {
+				// Check if tenant exists before creating a new record
+				var tenantExists int
+				err := tx.QueryRow("SELECT COUNT(*) FROM tenants WHERE id = ?", record.TenantID).Scan(&tenantExists)
+				if err != nil {
+					tx.Rollback()
+					return err
+				}
+				if tenantExists == 0 {
+					tx.Rollback()
+					return errors.New("tenant not found")
+				}
+
 				// Create new record
 				query := `
 					INSERT INTO payment_records (
